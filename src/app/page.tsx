@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Whiteboard from './components/Whiteboard';
 import CameraRecorder from './components/CameraRecorder';
+import PromptSelector from './components/PromptSelector';
 
 type Phase = 'Discovery' | 'Heads-down' | 'Presentation';
 
@@ -39,6 +40,7 @@ Consider:
 - Metrics to track success`;
 
 export default function Home() {
+  const [sessionStarted, setSessionStarted] = useState(false);
   const [phase, setPhase] = useState<Phase>('Discovery');
   const [timeRemaining, setTimeRemaining] = useState(PHASE_DURATIONS.Discovery);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -125,8 +127,10 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isTimerRunning, phase]);
 
-  // Send intro message on load
+  // Send intro message when session starts
   useEffect(() => {
+    if (!sessionStarted) return;
+
     const sendIntro = async () => {
       const intro = `Welcome to your design challenge! You have 60 minutes to work through this problem. Let's begin with the Discovery phase. Take time to understand the problem, clarify constraints, and explore the solution space.`;
       addMessage('Coach', intro);
@@ -134,7 +138,7 @@ export default function Home() {
       setIsTimerRunning(true);
     };
     sendIntro();
-  }, []);
+  }, [sessionStarted]);
 
   // Scroll to bottom of messages
   useEffect(() => {
@@ -283,6 +287,24 @@ export default function Home() {
       setUserInput('');
     }
   };
+
+  const handleSelectPrompt = (selectedPrompt: string) => {
+    setPrompt(selectedPrompt);
+  };
+
+  const handleStartSession = () => {
+    setSessionStarted(true);
+  };
+
+  // Show prompt selector before session starts
+  if (!sessionStarted) {
+    return (
+      <PromptSelector
+        onSelectPrompt={handleSelectPrompt}
+        onStartSession={handleStartSession}
+      />
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
