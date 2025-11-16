@@ -5,6 +5,10 @@ A local Next.js web app that simulates a 60-minute product design interview exer
 ## Features
 
 ### Core Interview Simulation
+- **15 Real-World Design Challenges**: Curated library of prompts from Google, Meta, LinkedIn, and more
+  - Filter by category (Improve Existing, New Product, Accessibility, Mobile App, etc.)
+  - Filter by difficulty (Beginner, Intermediate, Advanced)
+  - Examples: Alarm clock for the blind, LinkedIn freelance marketplace, ATM redesign
 - **60-Minute Timer with Phases**: Discovery (20 min), Heads-down (25 min), Presentation (15 min)
 - **Video Recording**: Record your entire interview session with camera and audio using MediaRecorder API
 - **Speech-to-Text**: Capture your spoken thinking using Web Speech API (Chrome)
@@ -65,24 +69,29 @@ A local Next.js web app that simulates a 60-minute product design interview exer
 
 ## Usage
 
-1. **Start the Session**: The timer begins automatically when you load the app
-2. **Record Your Interview**: Switch to the "Camera" tab
+1. **Choose Your Challenge**: When you open the app, select from 15 real-world design challenges
+   - Filter by category or difficulty to find the right challenge for your skill level
+   - Preview the full prompt with constraints and considerations
+   - Each challenge includes company attribution (when applicable) and pro tips
+   - Click "Start Interview Session" to begin
+2. **Start the Session**: The 60-minute timer begins automatically after you select a challenge
+3. **Record Your Interview**: Switch to the "Camera" tab
    - Click "Start Camera" to enable your webcam
    - Click "Start Recording" to begin capturing your interview
    - The recording includes both video and audio
    - Download your recording after the session for review
-3. **Speak Your Thinking**: Click "Start Listening" to enable speech-to-text
+4. **Speak Your Thinking**: Click "Start Listening" to enable speech-to-text
    - Your spoken words are transcribed and analyzed for evaluation
    - Make sure to verbalize your design decisions as you work!
-4. **Sketch Wireframes**: Switch to the "Whiteboard" tab to draw low-fi wireframes
+5. **Sketch Wireframes**: Switch to the "Whiteboard" tab to draw low-fi wireframes
    - Use keyboard shortcuts: V (select), R (rectangle), T (text), A (arrow), Space (pan)
    - Create rectangles for frames/components, add text labels, draw arrows
    - **Important**: Name your screens and components clearly while drawing
    - Explain UX patterns and trade-offs verbally as you sketch
    - Undo/Redo with Cmd/Ctrl+Z and Cmd/Ctrl+Shift+Z
    - Export your canvas as PNG
-5. **Ask the Coach**: Type questions or click "Ask Coach" during Discovery or Heads-down phases
-6. **End & Debrief**: Click "End & Debrief" when done to get your multimodal evaluation scorecard
+6. **Ask the Coach**: Type questions or click "Ask Coach" during Discovery or Heads-down phases
+7. **End & Debrief**: Click "End & Debrief" when done to get your multimodal evaluation scorecard
    - See how well you communicated design decisions
    - Get specific feedback on naming, pattern explanation, and trade-off articulation
    - Review whiteboard analysis and receive personalized practice drills
