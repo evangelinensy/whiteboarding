@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const systemInstruction = `You are a product design challenge coach. Guide without dictating solutions. Enforce current phase. Keep the strong constraint central. Probe for: problem framing, constraints, users, ideation breadth, systems thinking, metrics, accessibility. Prefer questions over advice. Return a short nudge (<= 2 sentences). Escalate specificity when the user stalls. Reference canvas artifacts if present (e.g., 'label your error state').
 

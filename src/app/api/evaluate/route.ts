@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
-    const systemInstruction = `You are an expert product design interviewer. Evaluate this design challenge session and produce compact JSON adhering exactly to this schema:
+    const systemInstruction = `You are an expert product design interviewer specializing in multimodal assessment. Evaluate this design challenge session by analyzing BOTH what they said AND what they drew. Produce compact JSON adhering exactly to this schema:
 
 {
   "rubric": {
@@ -29,13 +29,42 @@ export async function POST(request: NextRequest) {
     "communication": 1-5,
     "velocity_with_rigor": 1-5
   },
+  "communication_breakdown": {
+    "naming_clarity": {
+      "score": 1-5,
+      "feedback": "Did they clearly name screens, components, and UI elements? Examples: 'Home Screen', 'Profile Card', 'Navigation Bar'"
+    },
+    "pattern_explanation": {
+      "score": 1-5,
+      "feedback": "Did they explain UX patterns they chose? e.g., 'Using tabs instead of navigation drawer because...'"
+    },
+    "tradeoff_articulation": {
+      "score": 1-5,
+      "feedback": "Did they call out design trade-offs? e.g., 'Cards vs list - cards are more visual but take more space'"
+    },
+    "whiteboard_narration": {
+      "score": 1-5,
+      "feedback": "Did they verbally explain what they were drawing as they sketched?"
+    }
+  },
+  "whiteboard_analysis": {
+    "completeness": "Did they create enough wireframes/flows to convey their solution?",
+    "labeling_quality": "Were elements clearly labeled with descriptive names?",
+    "flow_clarity": "Did arrows and connections show clear user journeys?"
+  },
   "strengths": [string],
   "weaknesses": [string],
   "drills": [{"title": string, "time": number, "description": string}],
   "narrative": string
 }
 
-Provide specific, actionable feedback. Reference the canvas artifacts if provided. Be constructive but honest.
+CRITICAL EVALUATION CRITERIA:
+1. **Naming**: Did they say things like "This is the Home Screen" or "This card component shows..." vs just drawing silently?
+2. **Patterns**: Did they verbalize WHY they chose specific UI patterns? "I'm using cards instead of a list because they allow for richer imagery"
+3. **Trade-offs**: Did they articulate pros/cons of their choices?
+4. **Speech-Sketch Alignment**: Did their verbal explanation match what they were drawing?
+
+Provide specific, actionable feedback with concrete examples from their transcript and canvas. Be constructive but honest.
 
 Design Prompt: ${prompt}
 Coverage Tags Completed: ${Object.entries(coverage)

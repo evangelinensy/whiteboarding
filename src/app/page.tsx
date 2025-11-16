@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Whiteboard from './components/Whiteboard';
+import CameraRecorder from './components/CameraRecorder';
 
 type Phase = 'Discovery' | 'Heads-down' | 'Presentation';
 
@@ -54,12 +55,13 @@ export default function Home() {
     accessibility: false,
   });
   const [canvasSummary, setCanvasSummary] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'transcript' | 'whiteboard'>('transcript');
+  const [activeTab, setActiveTab] = useState<'transcript' | 'whiteboard' | 'camera'>('transcript');
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isCoachLoading, setIsCoachLoading] = useState(false);
   const [evaluation, setEvaluation] = useState<any>(null);
+  const [showCamera, setShowCamera] = useState(true);
 
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -445,6 +447,16 @@ export default function Home() {
           >
             Whiteboard
           </button>
+          <button
+            onClick={() => setActiveTab('camera')}
+            className={`px-6 py-3 font-medium ${
+              activeTab === 'camera'
+                ? 'border-b-2 border-blue-500 text-blue-600'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            Camera
+          </button>
         </div>
 
         {/* Tab Content */}
@@ -511,6 +523,48 @@ export default function Home() {
                           ))}
                         </ul>
                       </div>
+                      {evaluation.communication_breakdown && (
+                        <div>
+                          <strong className="text-purple-700">Communication Breakdown:</strong>
+                          <div className="ml-4 mt-1 space-y-1">
+                            <div>
+                              <span className="font-semibold">Naming Clarity ({evaluation.communication_breakdown.naming_clarity?.score}/5):</span>
+                              <p className="text-xs text-gray-700">{evaluation.communication_breakdown.naming_clarity?.feedback}</p>
+                            </div>
+                            <div>
+                              <span className="font-semibold">Pattern Explanation ({evaluation.communication_breakdown.pattern_explanation?.score}/5):</span>
+                              <p className="text-xs text-gray-700">{evaluation.communication_breakdown.pattern_explanation?.feedback}</p>
+                            </div>
+                            <div>
+                              <span className="font-semibold">Trade-off Articulation ({evaluation.communication_breakdown.tradeoff_articulation?.score}/5):</span>
+                              <p className="text-xs text-gray-700">{evaluation.communication_breakdown.tradeoff_articulation?.feedback}</p>
+                            </div>
+                            <div>
+                              <span className="font-semibold">Whiteboard Narration ({evaluation.communication_breakdown.whiteboard_narration?.score}/5):</span>
+                              <p className="text-xs text-gray-700">{evaluation.communication_breakdown.whiteboard_narration?.feedback}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {evaluation.whiteboard_analysis && (
+                        <div>
+                          <strong className="text-blue-700">Whiteboard Analysis:</strong>
+                          <div className="ml-4 mt-1 space-y-1">
+                            <div>
+                              <span className="font-semibold">Completeness:</span>
+                              <p className="text-xs text-gray-700">{evaluation.whiteboard_analysis.completeness}</p>
+                            </div>
+                            <div>
+                              <span className="font-semibold">Labeling Quality:</span>
+                              <p className="text-xs text-gray-700">{evaluation.whiteboard_analysis.labeling_quality}</p>
+                            </div>
+                            <div>
+                              <span className="font-semibold">Flow Clarity:</span>
+                              <p className="text-xs text-gray-700">{evaluation.whiteboard_analysis.flow_clarity}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       <div>
                         <strong>Narrative:</strong>
                         <p className="mt-1">{evaluation.narrative}</p>
@@ -551,8 +605,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          ) : (
+          ) : activeTab === 'whiteboard' ? (
             <Whiteboard onCanvasSummaryChange={setCanvasSummary} />
+          ) : (
+            <CameraRecorder isSessionActive={isTimerRunning} />
           )}
         </div>
       </div>

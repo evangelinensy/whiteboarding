@@ -1,15 +1,29 @@
 # Design Challenge Coach
 
-A local Next.js web app that simulates a 60-minute product design interview exercise with AI coaching, speech-to-text, text-to-speech, and a built-in whiteboard for low-fidelity wireframes.
+A local Next.js web app that simulates a 60-minute product design interview exercise with AI coaching, speech-to-text, text-to-speech, video recording, and a built-in whiteboard for low-fidelity wireframes.
 
 ## Features
 
+### Core Interview Simulation
 - **60-Minute Timer with Phases**: Discovery (20 min), Heads-down (25 min), Presentation (15 min)
+- **Video Recording**: Record your entire interview session with camera and audio using MediaRecorder API
 - **Speech-to-Text**: Capture your spoken thinking using Web Speech API (Chrome)
 - **AI Coaching**: Live coaching from Gemini AI with spoken feedback
 - **Whiteboard Canvas**: Draw low-fi wireframes with rectangles, text, arrows, and ellipses
 - **Coverage Tracking**: Automatically tracks problem framing, constraints, users, ideation, systems thinking, metrics, and accessibility
-- **Structured Evaluation**: Get a detailed scorecard with strengths, weaknesses, and practice drills
+
+### Multimodal Feedback System
+- **Enhanced Evaluation**: AI analyzes BOTH what you said AND what you drew
+- **Communication Breakdown**:
+  - Naming Clarity: Did you clearly name screens, components, and UI elements?
+  - Pattern Explanation: Did you explain UX patterns you chose? (e.g., "Using tabs instead of drawer because...")
+  - Trade-off Articulation: Did you call out design trade-offs? (e.g., "Cards vs list - pros/cons")
+  - Whiteboard Narration: Did you verbally explain what you were drawing?
+- **Whiteboard Analysis**:
+  - Completeness: Did you create enough wireframes/flows?
+  - Labeling Quality: Were elements clearly labeled?
+  - Flow Clarity: Did arrows show clear user journeys?
+- **Structured Scorecard**: Detailed rubric with strengths, weaknesses, and personalized practice drills
 
 ## Tech Stack
 
@@ -52,14 +66,26 @@ A local Next.js web app that simulates a 60-minute product design interview exer
 ## Usage
 
 1. **Start the Session**: The timer begins automatically when you load the app
-2. **Speak Your Thinking**: Click "Start Listening" to enable speech-to-text
-3. **Sketch Wireframes**: Switch to the "Whiteboard" tab to draw low-fi wireframes
+2. **Record Your Interview**: Switch to the "Camera" tab
+   - Click "Start Camera" to enable your webcam
+   - Click "Start Recording" to begin capturing your interview
+   - The recording includes both video and audio
+   - Download your recording after the session for review
+3. **Speak Your Thinking**: Click "Start Listening" to enable speech-to-text
+   - Your spoken words are transcribed and analyzed for evaluation
+   - Make sure to verbalize your design decisions as you work!
+4. **Sketch Wireframes**: Switch to the "Whiteboard" tab to draw low-fi wireframes
    - Use keyboard shortcuts: V (select), R (rectangle), T (text), A (arrow), Space (pan)
    - Create rectangles for frames/components, add text labels, draw arrows
+   - **Important**: Name your screens and components clearly while drawing
+   - Explain UX patterns and trade-offs verbally as you sketch
    - Undo/Redo with Cmd/Ctrl+Z and Cmd/Ctrl+Shift+Z
    - Export your canvas as PNG
-4. **Ask the Coach**: Type questions or click "Ask Coach" during Discovery or Heads-down phases
-5. **End & Debrief**: Click "End & Debrief" when done to get your evaluation scorecard
+5. **Ask the Coach**: Type questions or click "Ask Coach" during Discovery or Heads-down phases
+6. **End & Debrief**: Click "End & Debrief" when done to get your multimodal evaluation scorecard
+   - See how well you communicated design decisions
+   - Get specific feedback on naming, pattern explanation, and trade-off articulation
+   - Review whiteboard analysis and receive personalized practice drills
 
 ## Whiteboard Features
 
@@ -87,9 +113,10 @@ A local Next.js web app that simulates a 60-minute product design interview exer
 
 ## Models Used
 
-- **Coaching**: `gemini-2.0-flash-exp` (temperature: 0.7)
-- **Evaluation**: `gemini-2.0-flash-exp` (temperature: 0.2, JSON mode)
-- **TTS**: Browser Web Speech API (Gemini TTS as fallback if available)
+- **Coaching**: `gemini-1.5-flash` (temperature: 0.7) - Provides contextual nudges during the session
+- **Evaluation**: `gemini-1.5-pro` (temperature: 0.2, JSON mode) - Analyzes multimodal performance (speech + whiteboard)
+- **TTS**: Browser Web Speech API (Chrome's built-in TTS for coach voice)
+- **Video Recording**: MediaRecorder API (WebM format with VP8/VP9 codec)
 
 ## Coverage Tags
 
